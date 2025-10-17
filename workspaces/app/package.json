@@ -1,0 +1,10 @@
+{
+    "name": "@synth/app",
+    "version": "0.1.0",
+    "dependencies": {
+      "@synth/processors": "*"
+    },
+    "scripts": {
+      "build": "tsc -p tsconfig.json"
+    }
+  }

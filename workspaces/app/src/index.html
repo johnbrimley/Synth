@@ -1,0 +1,20 @@
+<html>
+
+<body>
+    <select name="waveforms" id="waveform">
+        <option value="square">Square</option>
+        <option value="saw">Saw</option>
+        <option value="sine">Sine</option>
+        <option value="triangle">Triangle</option>
+    </select>
+    <div style="border: 1px solid black; display: inline-flex; flex-direction: column;">
+        <span>Chorus</span>
+        <div>
+            <label for="delay">Delay:</label>
+            <input name="delay" id="chorusDelaySlider" type="range" min="0" max="500" value="30"/>
+            <input id="chorusDelayText" readonly="true" value="30ms"/>
+        </div>
+    </div>
+</body>
+
+</html>

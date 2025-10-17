@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "module": "ESNext",
+        "lib": [
+            "ESNext", "WebWorker"
+        ],
+        "types": [
+            "audioworklet"
+        ],
+        "strict": true,
+    },
+    "include": [
+        "src/**/*.ts"
+    ]
+}
