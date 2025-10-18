@@ -4,6 +4,7 @@ const audioContext = new AudioContext();
 console.log(audioContext.sampleRate);
 await audioContext.audioWorklet.addModule('tone-processor.js');
 await audioContext.audioWorklet.addModule('chorus-processor.js');
+await audioContext.audioWorklet.addModule('tremolo-processor.js');
 await audioContext.audioWorklet.addModule('hyperbolic-tangent-processor.js');
 const toneNode = new AudioWorkletNode(
   audioContext,
@@ -13,14 +14,20 @@ const chorusNode = new AudioWorkletNode(
   audioContext,
   'chorus-processor'
 );
+const tremoloNode = new AudioWorkletNode(
+  audioContext,
+  'tremolo-processor'
+);
 const hyperbolicTangentNode = new AudioWorkletNode(
   audioContext,
   'hyperbolic-tangent-processor'
 );
 toneNode
-.connect(chorusNode)
+.connect(tremoloNode)
+//.connect(chorusNode)
 .connect(hyperbolicTangentNode)
 .connect(audioContext.destination);
+
 
 const waveformSelect = document.getElementById('waveform') as HTMLSelectElement;
 

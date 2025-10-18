@@ -1,64 +1,48 @@
-export type Waveform = 'sine' | 'square' | 'saw' | 'triangle'
+import { Waveform } from "./enums/Waveforms";
+import { Oscillator } from "./oscillator";
+import { ProcessorBase } from "./processor-base";
+import { WaveformGenerator } from "./waveform-generator";
+
 
 export type ToneMessage =
   | { type: 'noteOn'; frequency: number; }
   | { type: 'noteOff'; frequency: number }
   | { type: 'setWaveform'; waveform: Waveform };
 
-class ToneProcessor extends AudioWorkletProcessor {
-  private frequencies = new Set<number>();
-  private waveform: Waveform = 'square';
+class ToneProcessor extends ProcessorBase {
+  private generators = new Map<number, WaveformGenerator>();
+  private waveform: Waveform = Waveform.Square;
   constructor() {
     super();
     this.port.onmessage = (event: MessageEvent<ToneMessage>) => {
       const msg = event.data;
       switch (msg.type) {
         case 'noteOn':
-          this.frequencies.add(msg.frequency)
+          this.generators.set(msg.frequency, new WaveformGenerator(this.waveform, new Oscillator(sampleRate, msg.frequency)));
           break;
         case 'noteOff':
-          this.frequencies.delete(msg.frequency);
+          this.generators.delete(msg.frequency);
           break;
         case 'setWaveform':
-          console.log(msg.waveform);
           this.waveform = msg.waveform;
+          for(let key of this.generators.keys()){
+            this.generators.set(key, new WaveformGenerator(this.waveform, new Oscillator(sampleRate, key)));
+          }
           break;
       }
     };
   }
 
-  process(inputs: Float32Array[][], outputs: Float32Array[][]): boolean {
-    outputs.forEach((output) => {
-      output.forEach((channel) => {
-        for (let i = 0; i < channel.length; i++) {
-          //current frame is the total number of process calls since we started.
-          const currentSample = currentFrame + i;
-          let sampleSum = 0;
-          this.frequencies.forEach((frequency) => {
-            const period = (sampleRate/frequency);
-            const phase = currentSample % period;
-            const normalizedPhase = phase / period;
-            sampleSum += this.determineOutputSample(normalizedPhase);
-          });
-          channel[i] = Math.tanh(sampleSum);
-        }
-      });
-    });
-    return true;
-  }
+  // process(inputs: Float32Array[][], outputs: Float32Array[][]): boolean {
+  //   return super.process(inputs,outputs);
+  // }
 
-  private determineOutputSample(normalizedPhase: number): number{
-    switch (this.waveform) {
-      case 'saw':
-        return 2 * normalizedPhase - 1;
-      case 'sine':
-        return Math.sin(2 * Math.PI * normalizedPhase);
-      case 'triangle':
-        return 4 * Math.abs(normalizedPhase - 0.5) - 1;
-      default:
-        //we'll fall back to square I guess
-        return normalizedPhase < 0.5 ? 1 : -1;
-    }
+  protected override processSample(inputSample: number): number {
+    let sampleSum = 0;
+    this.generators.forEach((generator)=>{
+      sampleSum += generator.sampleAt(this.sampleIndex);
+    });
+    return sampleSum;
   }
 }
 

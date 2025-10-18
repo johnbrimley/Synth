@@ -53,7 +53,9 @@ const processors = {
     entry: {
         tone: path.resolve(__dirname, 'workspaces/processors/src/tone-processor.ts'),
         chorus: path.resolve(__dirname, 'workspaces/processors/src/chorus-processor.ts'),
+        tremolo: path.resolve(__dirname, 'workspaces/processors/src/tremolo-processor.ts'),
         'hyperbolic-tangent': path.resolve(__dirname, 'workspaces/processors/src/hyperbolic-tangent-processor.ts'),
+        
     },
     module: {
         rules: [
