@@ -1,1 +1,0 @@
-export enum Waveform { Sine = 'Sine', Square = 'Square', Saw = 'Saw', Triangle = 'Triangle' }

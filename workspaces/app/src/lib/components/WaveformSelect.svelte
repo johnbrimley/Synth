@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Waveform } from "$lib/common/enums/waveforms";
-  export let value: Waveform;
-  const options = Object.values(Waveform);
+  import { Waveforms } from "@common/enums/waveforms";
+  export let value: Waveforms;
+  const options = Object.values(Waveforms);
 </script>
 
 <label>

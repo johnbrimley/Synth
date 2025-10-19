@@ -1,7 +1,7 @@
-import { Waveform } from "../enums/waveforms";
+import { Waveforms } from "../enums/waveforms";
 
 export interface ToneMessage {
-    waveform?: Waveform;
+    waveform?: Waveforms;
     addFrequency?: number;
     removeFrequency?: number;
 }

@@ -15,17 +15,7 @@ const processorEntries = Object.fromEntries(
 
 export default defineConfig({
     plugins: [
-        checker({ typescript: true }),
-        viteStaticCopy({
-            targets: [
-                {
-                    src: 'src/common',
-                    dest: path.resolve(__dirname, '../app/src/lib'),
-                    flatten: false
-                }
-            ],
-            watch: true
-        })
+        checker({ typescript: true })
     ],
     build: {
         // force "library" build so Vite doesn't treat these as app assets

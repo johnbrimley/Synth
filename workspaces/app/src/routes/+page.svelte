@@ -1,14 +1,14 @@
 <script lang="ts">
-    import WaveformSelect from "$lib/components/WaveformSelect.svelte";
-    import { Waveform } from "$lib/common/enums/waveforms";
-    import { Processors } from "$lib/common/enums/processors";
+    import { Processors } from "@common/enums/processors";
     import { onMount } from "svelte";
     import ToneControl from "$lib/components/ToneControl.svelte";
     import { error } from "@sveltejs/kit";
     import Keyboard from "$lib/components/Keyboard.svelte";
+    import TremoloControl from "$lib/components/TremoloControl.svelte";
 
     let audioContext: AudioContext | null = null;
     let toneNode: AudioWorkletNode | null = null;
+    let tremoloNode: AudioWorkletNode | null = null;
 
     onMount(async () => {
         audioContext = new AudioContext();
@@ -27,20 +27,26 @@
             nodes.get(Processors.Tone) ??
             error(500, { message: "toneNode was undefined" });
 
+        tremoloNode =
+            nodes.get(Processors.Tremolo) ??
+            error(500, { message: "tremoloNode was undefined" });
+
         toneNode
-        .connect(nodes.get(Processors.Tanh)!)
-        .connect(audioContext.destination);
+            .connect(tremoloNode)
+            .connect(nodes.get(Processors.Tanh)!)
+            .connect(audioContext.destination);
     });
 </script>
 
+<div class="controls-container">
+    <ToneControl bind:node={toneNode} />
+    <TremoloControl bind:node={tremoloNode} />
+</div>
+<Keyboard bind:node={toneNode} />
+
 <style>
-    .control-container {
+    .controls-container {
         display: flex;
         flex-direction: row;
     }
 </style>
-
-<div class="control-container">
-    <ToneControl bind:node={toneNode} />
-</div>
-<Keyboard bind:node={toneNode} />

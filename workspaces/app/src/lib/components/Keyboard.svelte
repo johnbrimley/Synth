@@ -1,5 +1,6 @@
 <script lang="ts">
-    import type {ToneMessage}  from "$lib/common/messages/tone-message";
+    import type { ToneMessage } from "@common/messages/tone-message";
+    import { onMount } from "svelte";
 
     export let node: AudioWorkletNode | null = null;
 
@@ -19,19 +20,21 @@
         k: 523.25, // B4
     };
 
-    window.addEventListener("keydown", (event: KeyboardEvent) => {
-        const addFrequency = noteMap[event.key];
-        const message: ToneMessage = {addFrequency};
-        if (addFrequency && node){
-            node.port.postMessage(message)
-        }
-    });
+    onMount(() => {
+        window.addEventListener("keydown", (event: KeyboardEvent) => {
+            const addFrequency = noteMap[event.key];
+            const message: ToneMessage = { addFrequency };
+            if (addFrequency && node) {
+                node.port.postMessage(message);
+            }
+        });
 
-    window.addEventListener("keyup", (event: KeyboardEvent) => {
-        const removeFrequency = noteMap[event.key];
-        const message: ToneMessage = {removeFrequency};
-        if (removeFrequency && node){
-            node.port.postMessage(message);
-        }
+        window.addEventListener("keyup", (event: KeyboardEvent) => {
+            const removeFrequency = noteMap[event.key];
+            const message: ToneMessage = { removeFrequency };
+            if (removeFrequency && node) {
+                node.port.postMessage(message);
+            }
+        });
     });
 </script>

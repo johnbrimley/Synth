@@ -1,1 +1,1 @@
-export enum Waveform { Sine = 'Sine', Square = 'Square', Saw = 'Saw', Triangle = 'Triangle' }
+export enum Waveforms { Sine = 'Sine', Square = 'Square', Saw = 'Saw', Triangle = 'Triangle' }

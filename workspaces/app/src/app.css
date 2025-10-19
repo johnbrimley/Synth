@@ -1,0 +1,8 @@
+.processor-container {
+    display: flex;
+    flex-direction: column;
+}
+.processor-label{
+    font-size: 1.1em;
+    font-weight: 600;
+}
