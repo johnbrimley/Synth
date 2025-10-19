@@ -1,4 +1,4 @@
-import { Waveform } from "./enums/Waveforms";
+import { Waveform } from "./common/enums/waveforms";
 import { Oscillator } from "./oscillator";
 import { ProcessorBase } from "./processor-base";
 import { WaveformGenerator } from "./waveform-generator";

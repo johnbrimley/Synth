@@ -1,13 +1,16 @@
 {
-    "name": "@synth/processors",
-    "version": "0.1.0",
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
-    "scripts": {
-      "build": "tsc -p tsconfig.json"
-    },
-    "devDependencies": {
-      "typescript": "^5.6.0",
-      "@types/audioworklet": "^0.0.x"
-    }
+  "name": "@synth/processors",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "watch": "vite build --watch"
+  },
+  "devDependencies": {
+    "@types/audioworklet": "^0.0.x",
+    "typescript": "^5.6.0",
+    "vite": "^7.1.7",
+    "vite-plugin-checker": "^0.11.0",
+    "vite-plugin-static-copy": "^3.1.4"
   }
+}

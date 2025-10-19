@@ -6,17 +6,11 @@
     "workspaces/processors"
   ],
   "scripts": {
-    "dev": "npm-run-all -p serve watch:processors",
-    "serve": "webpack serve --config-name app",
-    "watch:processors": "webpack --config-name processors --watch"
+    "dev": "npm-run-all -p dev:app watch:processors",
+    "dev:app": "npm run dev -w app",
+    "watch:processors": "npm run watch -w @synth/processors"
   },
   "devDependencies": {
-    "html-webpack-plugin": "^5.6.4",
-    "npm-run-all": "^4.1.5",
-    "ts-loader": "^9.5.4",
-    "typescript": "^5.9.3",
-    "webpack": "^5.102.1",
-    "webpack-cli": "^6.0.1",
-    "webpack-dev-server": "^5.2.2"
+    "npm-run-all": "^4.1.5"
   }
 }
