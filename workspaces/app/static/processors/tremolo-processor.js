@@ -1,28 +1,25 @@
-import { W as o, a as t, O as s } from "./waveform-generator.js";
-import { P as a } from "./processor-base.js";
-class i extends a {
-  depth = 0.5;
-  active = !0;
-  frequency = 5;
-  waveform = o.Sine;
-  generator = new t(this.waveform, new s(sampleRate, this.frequency));
+import { W as a, a as t, O as r } from "./waveform-generator.js";
+import { P as o } from "./processor-base.js";
+class i extends o {
+  depth = 0;
+  settings = {
+    active: !1,
+    waveform: a.Sine,
+    frequency: 0,
+    depth: 0
+  };
+  generator = new t(this.settings.waveform, new r(sampleRate, this.settings.frequency));
   constructor() {
-    super(), this.port.onmessage = (r) => {
-      const e = r.data;
-      e.active && (this.active = e.active), e.depth && (this.depth = e.depth), e.frequency && (this.frequency = e.frequency, this.generator = new t(
-        this.waveform,
-        new s(sampleRate, e.frequency)
-      )), e.waveform && (this.waveform = e.waveform, this.generator = new t(
-        e.waveform,
-        new s(sampleRate, this.frequency)
-      ));
+    super(), this.port.onmessage = (e) => {
+      this.settings = e.data, this.depth = this.settings.depth, this.generator = new t(this.settings.waveform, new r(sampleRate, this.settings.frequency));
     };
   }
-  processSample(r) {
-    if (!this.active)
-      return r;
-    const e = this.generator.sampleAt(this.sampleIndex) * this.depth;
-    return r * (1 + e);
+  process(e, s) {
+    return this.settings.active ? super.process(e, s) : o.passthrough(e, s);
+  }
+  processSample(e) {
+    const s = this.generator.sampleAt(this.sampleIndex) * this.depth;
+    return e * (1 + s);
   }
 }
 registerProcessor("tremolo-processor", i);

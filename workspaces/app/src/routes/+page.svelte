@@ -5,10 +5,13 @@
     import { error } from "@sveltejs/kit";
     import Keyboard from "$lib/components/Keyboard.svelte";
     import TremoloControl from "$lib/components/TremoloControl.svelte";
+    import ContextStatusControl from "$lib/components/ContextStatusControl.svelte";
+    import VibratoControl from "$lib/components/VibratoControl.svelte";
 
     let audioContext: AudioContext | null = null;
     let toneNode: AudioWorkletNode | null = null;
     let tremoloNode: AudioWorkletNode | null = null;
+    let vibratoNode: AudioWorkletNode | null = null;
 
     onMount(async () => {
         audioContext = new AudioContext();
@@ -31,16 +34,23 @@
             nodes.get(Processors.Tremolo) ??
             error(500, { message: "tremoloNode was undefined" });
 
+        vibratoNode =
+            nodes.get(Processors.Vibrato) ??
+            error(500, { message: "vibratoNode was undefined" });
+
         toneNode
             .connect(tremoloNode)
+            .connect(vibratoNode)
             .connect(nodes.get(Processors.Tanh)!)
             .connect(audioContext.destination);
     });
 </script>
 
 <div class="controls-container">
+    <ContextStatusControl bind:context={audioContext} />
     <ToneControl bind:node={toneNode} />
     <TremoloControl bind:node={tremoloNode} />
+    <VibratoControl bind:node={vibratoNode}/>
 </div>
 <Keyboard bind:node={toneNode} />
 
@@ -48,5 +58,6 @@
     .controls-container {
         display: flex;
         flex-direction: row;
+        gap: 1em;
     }
 </style>

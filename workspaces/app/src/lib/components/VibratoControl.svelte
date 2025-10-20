@@ -1,11 +1,11 @@
 <script lang="ts">
     import { Waveforms } from '@common/enums/waveforms';
-    import type {TremoloMessage} from '@common/messages/tremolo-message'
+    import type {VibratoMessage} from '@common/messages/vibrato-message'
     import WaveformSelect from './WaveformSelect.svelte';
 
     export let node: AudioWorkletNode | null = null;
 
-    let message: TremoloMessage = {
+    let message: VibratoMessage = {
         active: false,
         waveform: Waveforms.Sine,
         frequency: 0,
@@ -18,7 +18,7 @@
 </script>
 
 <div class="processor-container">
- <span class=processor-label>Tremolo</span>
+ <span class=processor-label>Vibrato</span>
  <div>
     <span>Active</span>
     <input type="checkbox" bind:checked={message.active}/>
@@ -31,7 +31,7 @@
  </div>
  <div>
     <span>Depth</span>
-    <input type="range" min="0" max="1" step="0.01" bind:value={message.depth}/>
-    <span>{message.depth}</span>
+    <input type="range" min="0" max="5" step="0.01" bind:value={message.depth}/>
+    <span>{message.depth}ms</span>
  </div>
 </div>

@@ -1,6 +1,6 @@
 import { Waveforms } from "../enums/waveforms";
 
-export interface TremoloMessage{
+export interface VibratoMessage{
     active: boolean;
     waveform: Waveforms;
     frequency: number;

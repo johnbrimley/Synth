@@ -26,4 +26,21 @@ export abstract class ProcessorBase extends AudioWorkletProcessor implements Aud
       }
 
     protected abstract processSample(inputSample: number):number;
+
+    static passthrough(inputs: Float32Array[][], outputs: Float32Array[][]):boolean{
+      for (let outputIndex = 0; outputIndex < outputs.length; outputIndex++) {
+        const output = outputs[outputIndex];
+        const input = inputs[outputIndex];
+    
+        for (let channelIndex = 0; channelIndex < output.length; channelIndex++) {
+          const inputChannel = input[channelIndex] ?? ProcessorBase.EMPTY_BUFFER;
+          const outputChannel = output[channelIndex];
+    
+          for (let frameSampleIndex = 0; frameSampleIndex < outputChannel.length; frameSampleIndex++) {             
+            outputChannel[frameSampleIndex] =inputChannel[frameSampleIndex];
+          }
+        }
+      }
+      return true;
+    }
 }

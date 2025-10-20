@@ -22,6 +22,7 @@
 
     onMount(() => {
         window.addEventListener("keydown", (event: KeyboardEvent) => {
+            if (event.repeat) return;
             const addFrequency = noteMap[event.key];
             const message: ToneMessage = { addFrequency };
             if (addFrequency && node) {
